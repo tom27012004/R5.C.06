@@ -1,3 +1,4 @@
+import warnings
 import pandas as pd
 import numpy as np
 
@@ -34,18 +35,38 @@ plt.show()
 numeric_data = df_qual.select_dtypes(include=[np.number])
 
 # Calculer la matrice de corrélation pour un sous-ensemble
-correlation_matrix = numeric_data.corr()
+correlation_matrix = df[quant].corr()
 
 # Pour visualiser la corrélation
 plt.figure(figsize=(10, 8))
-sns.heatmap(correlation_matrix, annot=False, cmap="coolwarm")
-plt.title("Matrice de Corrélation")
+sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm")
+plt.title("Matrice de Corrélation 1")
 plt.show()
 
-# Scatter plot entre une variable explicative et la cible
-# Rien de spécial ici
-plt.scatter(df_qual["Age"], df_qual["Anxiety"])
-plt.xlabel("Age")
-plt.ylabel("Anxiety")
-plt.title("Relation entre Variable Explicative et Cible")
+# Calculer la matrice de corrélation pour un sous-ensemble
+correlation_matrix = numeric_data.corr()
+
+# Pour visualiser la corrélation avec plus d'éléments
+plt.figure(figsize=(10, 8))
+sns.heatmap(correlation_matrix, annot=False, cmap="coolwarm")
+plt.title("Matrice de Corrélation  2")
+plt.show()
+
+
+plt.figure(figsize=(10, 8), layout="constrained")
+plt.subplot(3,3,1)
+sns.histplot(df['Age'], kde=True, color='#144552')
+plt.subplot(3,3,2)
+sns.histplot(df['Hours per day'], kde=True, color='#1B3A4B')
+# Prends trop de temps à charger
+# plt.subplot(3,3,3)
+# sns.histplot(df['BPM'], kde=True, color='#212F45')
+plt.subplot(3,3,4)
+sns.histplot(df['Anxiety'], kde=True, color='#272640')
+plt.subplot(3,3,5)
+sns.histplot(df['Depression'], kde=True, color='#312244')
+plt.subplot(3,3,6)
+sns.histplot(df['Insomnia'], kde=True, color='#3E1F47')
+plt.subplot(3,3,7)
+sns.histplot(df['OCD'], kde=True, color='#4D194D')
 plt.show()
