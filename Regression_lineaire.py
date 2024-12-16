@@ -1,4 +1,3 @@
-import warnings
 import pandas as pd
 import numpy as np
 
@@ -10,8 +9,10 @@ quant = ['Age','Hours per day','BPM','Anxiety','Depression','Insomnia','OCD']
 
 # Transformation des variables qualitatifs en variables quantitatifs
 qual = ['Age', 'Hours per day', 'While working', 'Exploratory', 'BPM','Anxiety', 'Depression', 'Insomnia', 'OCD', 'Music effects']
+
 freq = {'Never': 0, 'Rarely': 1, 'Sometimes': 2, 'Very frequently': 3}
 df_genre = df[[col for col in df.columns if col.startswith('Frequency')]]
+
 df_genre.replace(freq, inplace=True)
 df_qual = pd.concat([df[qual], df_genre], axis=1)
 df_qual['While working'] = df_qual['While working'].map({'Yes': 1, 'No': 0})
