@@ -1,5 +1,5 @@
 # Recharger le fichier et filtrer les données
-file_path = './Mental_Health_Music.csv'
+file_path = '../Mental_Health_Music.csv'
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -105,20 +105,6 @@ total_genre["genre"] = total_genre["genre"].str.lower()
 total_genre = total_genre.drop_duplicates(subset=['genre'], keep='first')
 
 
-# total_stream = pd.DataFrame({"stream" : []})
-
-# Supprimer les espaces en début et fin de chaîne
-# total_stream["stream"] = filtered_data["Primary streaming service"].str.strip()
-
-# Mettre toutes les chaînes en minuscules pour éviter les doublons liés à la casse
-# total_stream["stream"] = total_stream["stream"].str.lower()
-
-# Supprimer les doublons
-# total_stream = total_stream.drop_duplicates(subset=['stream'], keep='first')
-
-
-# print(total_stream)
-
 # Je vais souvent faire des matrices de corrélation
 def matrice_corr(df, label) :
     numeric_data = df.select_dtypes(include=[np.number])
@@ -141,14 +127,6 @@ def hoe_genre_cleaned(row):
     result = [1 if genre in row else 0 for genre in genre_list]
     return result
 
-
-# def hoe_stream_(row):
-#     stream_list = total_stream["stream"].tolist()
-#     row = row.strip()
-#     row= row.lower()
-#     result = [1 if stream in row else 0 for stream in stream_list]
-#     return result
-
 filtered_data_2 = filtered_data.copy()
 
 filtered_data_2["Fav genre"] = filtered_data_2["Fav genre"].apply(hoe_genre_cleaned) 
@@ -161,15 +139,6 @@ max_genres = max(filtered_data_2["Fav genre"].apply(len))
 
 # Compléter les listes pour qu'elles aient toutes la même longueur
 filtered_data_2["Fav genre"] = filtered_data_2["Fav genre"].apply(lambda x: x + [0] * (max_genres - len(x)))
-
-# # Vérifier que toutes les entrées dans "genre" sont des listes
-# filtered_data["Primary streaming service"] = filtered_data["Primary streaming service"].apply(lambda x: x if isinstance(x, list) else [])
-# # Trouver la longueur maximale des listes dans la colonne "genre"
-# max_stream = max(filtered_data["Primary streaming service"].apply(len))
-
-# # Compléter les listes pour qu'elles aient toutes la même longueur
-# filtered_data["Primary streaming service"] = filtered_data["Primary streaming service"].apply(lambda x: x + [0] * (max_stream - len(x)))
-
 
 # Convertir les listes en colonnes
 genre_columns = pd.DataFrame(filtered_data_2["Fav genre"].tolist(), 
@@ -186,37 +155,8 @@ filtered_data_2 = filtered_data_2.drop(["BPM", "Anxiety", "Depression", "Insomni
 label = "Matrice de corrélation entre genre et santé mental global"
 matrice_corr(filtered_data_2, label)
 
-
-# # Convertir les listes en colonnes
-# genre_columns = pd.DataFrame(filtered_data["Primary streaming service"].tolist(), 
-#                             columns=[f"stream_{i}" for i in range(max_stream)], 
-#                             index=filtered_data.index)
-
-
-# # Supprimer la colonne d'origine et concaténer les nouvelles colonnes
-# filtered_data = pd.concat([filtered_data.drop(columns=["Primary streaming service"]), genre_columns], axis=1)
-
-
-# sns.barplot(x=filtered_data["Primary streaming service"].value_counts().values, y=filtered_data["Primary streaming service"].value_counts().index.values)
-# plt.xlabel("Population")
-# plt.ylabel("Primary streaming service")
-# plt.title("Relation entre Variable Explicative et Cible")
-# plt.show()
-
-# sns.barplot(x=filtered_data["Fav genre"].value_counts().values, y=filtered_data["Fav genre"].value_counts().index.values)
-# plt.xlabel("Population")
-# plt.ylabel("Fav genre")
-# plt.title("Relation entre Variable Explicative et Cible")
-# plt.show()
 label = "Matrice de corrélation global"
 matrice_corr(filtered_data, label)
-
-# sns.barplot(y=filtered_data["Hours per day"], x=filtered_data["Insomnia"])
-# plt.ylabel("Hours per day")
-# plt.xlabel("Insomnia")
-# plt.title("Relation entre Variable Explicative et Cible")
-# plt.show()
-
 
 # Isoler l'analyse pour RAP
 df_rap = filtered_data[filtered_data["Fav genre"] == "Rap"]
