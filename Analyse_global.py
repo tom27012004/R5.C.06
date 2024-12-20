@@ -160,8 +160,8 @@ matrice_corr(filtered_data, label)
 
 plt.barh(grouped_data["Fav genre"], grouped_data["Mental_Health_Score_Mean"])
 plt.title('Score mental moyen par rapport au genre favoris')
-plt.xlabel('Fav genre')
-plt.ylabel('Mental_Health_Score_Mean')
+plt.ylabel('Fav genre')
+plt.xlabel('Mental_Health_Score_Mean')
 plt.show()
 
 # Isoler l'analyse pour RAP
