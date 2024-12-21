@@ -15,13 +15,6 @@ def split_data(data, feature, threshold):
     return left, right
 
 def find_best_split(X, y, min_samples_split):
-    """
-    Identifier la meilleure division possible pour un nœud.
-    
-    X : DataFrame des caractéristiques.
-    y : Série ou vecteur cible.
-    min_samples_split : Nombre minimum d'échantillons requis pour diviser.
-    """
     best_feature = None
     best_threshold = None
     best_split = None
@@ -62,16 +55,7 @@ def find_best_split(X, y, min_samples_split):
 
 
 def build_tree(X, y, max_depth=None, min_samples_split=2, min_samples_leaf=1, depth=0):
-    """
-    Construire un arbre de régression à partir des données.
-    
-    X : DataFrame des caractéristiques.
-    y : Série ou vecteur cible.
-    max_depth : Profondeur maximale de l'arbre (None = pas de limite).
-    min_samples_split : Nombre minimum d'échantillons pour diviser un nœud.
-    min_samples_leaf : Nombre minimum d'échantillons dans une feuille.
-    depth : Niveau actuel de l'arbre (interne, utilisé pour contrôler max_depth).
-    """
+
     # Si le nombre d'échantillons est insuffisant ou si on a atteint la profondeur max, retourner une feuille
     if len(y) <= min_samples_leaf or (max_depth is not None and depth >= max_depth):
         return {"value": y.mean()}
@@ -143,6 +127,7 @@ for col in features:
 # print(df.corr())
 
 # Construire les arbres
+# peu importe les paramètres, rien de concluant ne résulte de ces prédictions
 trees = {}
 max_depth = 4  # Profondeur
 min_samples_split = 10  # données nécessaires pour diviser un nœud
@@ -152,12 +137,12 @@ for target in targets:
     trees[target] = build_tree(df[features], df[target], max_depth=max_depth, min_samples_split=min_samples_split, min_samples_leaf=min_samples_leaf)
 
 
-# Exemple de prédiction
-sample = df.iloc[0]  # Exemple de ligne
+# prédiction
+sample = df.iloc[2] 
 predictions = predict_multiple_targets(trees, sample)
 print("Prédictions pour l'exemple :", predictions)
 
-example_index = 0
+example_index = 2
 real_values = df.iloc[example_index][targets]
 print("Valeurs réelles :", real_values)
 print("Prédictions :", predictions)
