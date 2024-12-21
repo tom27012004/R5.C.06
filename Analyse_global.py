@@ -127,24 +127,21 @@ def hoe_genre_cleaned(row):
     result = [1 if genre in row else 0 for genre in genre_list]
     return result
 
+# Pour garder une copie non vectorisé
 filtered_data_2 = filtered_data.copy()
 
 filtered_data_2["Fav genre"] = filtered_data_2["Fav genre"].apply(hoe_genre_cleaned) 
-# filtered_data["Primary streaming service"] = filtered_data["Primary streaming service"].apply(hoe_stream_) 
 
 # Vérifier que toutes les entrées dans "genre" sont des listes
 filtered_data_2["Fav genre"] = filtered_data_2["Fav genre"].apply(lambda x: x if isinstance(x, list) else [])
 # Trouver la longueur maximale des listes dans la colonne "genre"
 max_genres = max(filtered_data_2["Fav genre"].apply(len))
-
 # Compléter les listes pour qu'elles aient toutes la même longueur
 filtered_data_2["Fav genre"] = filtered_data_2["Fav genre"].apply(lambda x: x + [0] * (max_genres - len(x)))
-
 # Convertir les listes en colonnes
 genre_columns = pd.DataFrame(filtered_data_2["Fav genre"].tolist(), 
                             columns=[f"genre_{i}" for i in range(max_genres)], 
                             index=filtered_data_2.index)
-
 # Supprimer la colonne d'origine et concaténer les nouvelles colonnes
 filtered_data_2 = pd.concat([filtered_data.drop(columns=["Fav genre"]), genre_columns], axis=1)
 
